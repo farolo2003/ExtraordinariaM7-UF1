@@ -1,0 +1,11 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "appdbs",
+            "database": "${workspaceFolder:cuf1}/db/app.db"
+        }
+    ]
+}

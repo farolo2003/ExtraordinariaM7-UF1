@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-2261" database="Sqlite" >
+	<schema name="Default" >
+		<table name="customers" spec="" >
+			<column name="customer_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="first_name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="last_name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="email" type="TEXT" jt="-1" mandatory="y" />
+			<column name="password" type="TEXT" jt="-1" mandatory="y" />
+			<column name="address" type="TEXT" jt="-1" />
+			<column name="phone_number" type="TEXT" jt="-1" />
+			<index name="pk_customers" unique="PRIMARY_KEY" >
+				<column name="customer_id" />
+			</index>
+			<index name="unq_customers_email" unique="UNIQUE_KEY" >
+				<column name="email" />
+			</index>
+		</table>
+		<table name="order_items" spec="" >
+			<column name="order_item_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INTEGER" jt="4" />
+			<column name="product_id" type="INTEGER" jt="4" />
+			<column name="quantity" type="INTEGER" jt="4" mandatory="y" />
+			<column name="subtotal" type="REAL" jt="8" mandatory="y" />
+			<index name="pk_order_items" unique="PRIMARY_KEY" >
+				<column name="order_item_id" />
+			</index>
+			<fk name="FK_order_items orders" to_schema="Default" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<fk name="FK_order_items products" to_schema="Default" to_table="products" options="" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+		</table>
+		<table name="orders" spec="" >
+			<column name="order_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="customer_id" type="INTEGER" jt="4" />
+			<column name="order_date" type="DATE" jt="91" mandatory="y" />
+			<column name="total_amount" type="REAL" jt="8" mandatory="y" />
+			<index name="pk_orders" unique="PRIMARY_KEY" >
+				<column name="order_id" />
+			</index>
+			<fk name="FK_orders customers" to_schema="Default" to_table="customers" options="" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+		</table>
+		<table name="products" spec="" >
+			<column name="product_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="description" type="TEXT" jt="-1" />
+			<column name="price" type="REAL" jt="8" mandatory="y" />
+			<column name="stock_quantity" type="INTEGER" jt="4" mandatory="y" />
+			<index name="pk_products" unique="PRIMARY_KEY" >
+				<column name="product_id" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Main Layout" id="Layout-1a47" show_relation="columns" >
+		<entity schema="Default" name="customers" color="BED3F4" x="51" y="442" />
+		<entity schema="Default" name="order_items" color="BED3F4" x="272" y="238" />
+		<entity schema="Default" name="orders" color="BED3F4" x="68" y="238" />
+		<entity schema="Default" name="products" color="BED3F4" x="493" y="238" />
+		<callout x="272" y="85" pointer="Round" >
+			<comment><![CDATA[This is a layout. You can create multiple layouts with the same or different tables. 
+
+Edit tables by double-clicking the table headers.]]></comment>
+		</callout>
+		<group name="orders" color="ECF0F7" >
+			<entity schema="Default" name="orders" />
+			<entity schema="Default" name="order_items" />
+			<entity schema="Default" name="customers" />
+			<entity schema="Default" name="products" />
+		</group>
+		<script name="SQL_Editor" id="Editor-1fab" language="SQL" >
+			<string><![CDATA[select * from customers;]]></string>
+		</script>
+		<script name="products" id="Editor-218d" language="SQL" >
+			<string><![CDATA[INSERT INTO products
+	(name, description, price, stock_quantity) VALUES ( "eau de te","colonia",19.23,100);]]></string>
+		</script>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-6b3" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="customers" color="BED3F4" x="51" y="255" />
+		<entity schema="Default" name="order_items" color="BED3F4" x="306" y="51" />
+		<entity schema="Default" name="orders" color="BED3F4" x="51" y="51" />
+		<entity schema="Default" name="products" color="BED3F4" x="578" y="51" />
+		<script name="SQL Editor" id="Editor-16fc" language="SQL" >
+			<string><![CDATA[SELECT
+	order_item_id, order_id, product_id, quantity, subtotal
+FROM
+	order_items s;]]></string>
+		</script>
+		<browser id="Browse-24c0" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="order_items" x="-2147483648" y="-2147483648" width="-2147483648" height="-2147483648" >
+				<browse_table schema="Default" entity="orders" fk="FK_order_items orders" x="40" y="-2147483648" width="500" height="350" record_view="y" >
+					<browse_table schema="Default" entity="customers" fk="FK_orders customers" x="580" y="-2147483648" width="500" height="350" record_view="y" />
+				</browse_table>
+			</browse_table>
+		</browser>
+		<query id="Query-1f63" name="Query Builder" >
+			<query_table schema="Default" name="order_items" alias="oi" x="51" y="51" >
+				<column name="order_item_id" />
+				<column name="order_id" />
+				<column name="product_id" />
+				<column name="quantity" />
+				<column name="subtotal" />
+				<query_table schema="Default" name="orders" alias="o" x="272" y="51" fk="FK_order_items orders" type="Inner Join" >
+					<column name="order_id" />
+					<column name="customer_id" />
+					<column name="order_date" />
+					<column name="total_amount" />
+					<query_table schema="Default" name="customers" alias="c" x="476" y="51" fk="FK_orders customers" type="Inner Join" >
+						<column name="customer_id" />
+						<column name="first_name" />
+						<column name="last_name" />
+						<column name="email" />
+						<column name="password" />
+						<column name="address" />
+						<column name="phone_number" />
+					</query_table>
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Report" id="Report-130d" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Order_items Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="order_item_id" type="4" />
+						<var name="order_id" type="4" />
+						<var name="product_id" type="4" />
+						<var name="quantity" type="4" />
+						<var name="subtotal" type="8" />
+						<script ><![CDATA[SELECT * FROM order_items]]></script>
+					</form_script>
+					<param name="width" value="100%" />
+					<param name="title" value="Sample Chart" />
+					<param name="value" value="subtotal" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="order_item_id" type="4" />
+						<var name="order_id" type="4" />
+						<var name="product_id" type="4" />
+						<var name="quantity" type="4" />
+						<var name="subtotal" type="8" />
+						<script ><![CDATA[SELECT * FROM order_items]]></script>
+					</form_script>
+					<cell type="label" name="order_item_id" pos="0,0,0,0,c,c" />
+					<cell type="label" name="order_id" pos="1,0,1,0,c,c" />
+					<cell type="label" name="product_id" pos="2,0,2,0,c,c" />
+					<cell type="label" name="quantity" pos="3,0,3,0,c,c" />
+					<cell type="label" name="subtotal" pos="4,0,4,0,c,c" />
+					<cell type="label" name="${order_item_id}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${order_id}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${product_id}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${quantity}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${subtotal}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="5,1,5,1,c,c" ref_id="Report-130d" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-130d" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-130d" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-130d" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

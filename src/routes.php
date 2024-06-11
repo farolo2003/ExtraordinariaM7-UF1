@@ -1,0 +1,21 @@
+<?php 
+
+$controllers=[
+    'home',
+    'login',
+    'register',
+    'dashboard',
+    'log',
+    'register',
+    'registerAction',
+    'store',
+    'cart',
+    'cart-add-item',
+    'logout',
+    'addProduct',
+    'addProductAction'
+];
+$actions=[
+    'index',
+    'log',
+];
